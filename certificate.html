@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate | Smart Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="certificate-container">
+        <div class="certificate">
+            <img src="https://cdn-icons-png.flaticon.com/512/2490/2490354.png" alt="Certificate Logo" class="certificate-logo" height="100px">
+            <h1>Certificate of Achievement</h1>
+            <p>This certifies that</p>
+            <h2 id="user-name"></h2>
+            <p id="certificate-message"></p>
+
+            <div id="score-section">
+                <h3>Level Scores:</h3>
+                <ul id="score-list"></ul>
+            </div>
+
+            <div class="certificate-actions">
+                <button id="print-btn">Print / Save as PDF</button>
+                <button id="share-btn">Share</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userName = localStorage.getItem("quizUser") || "Participant";
+            const skippedLevels = localStorage.getItem("skippedLevels") === "true";
+            const scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+            document.getElementById("user-name").innerText = userName;
+
+            if (skippedLevels) {
+                document.getElementById("certificate-message").innerText = "has participated in the Trivia Quiz.";
+            } else {
+                document.getElementById("certificate-message").innerText = "has successfully completed all quiz levels!";
+                const scoreList = document.getElementById("score-list");
+                scores.forEach((score, index) => {
+                    const li = document.createElement("li");
+                    li.innerText = `Level ${index + 1}: ${score}/10`;
+                    scoreList.appendChild(li);
+                });
+            }
+
+            document.getElementById("print-btn").addEventListener("click", () => {
+                window.print();
+            });
+
+            document.getElementById("share-btn").addEventListener("click", () => {
+                alert("Sharing is currently unavailable.");
+            });
+        });
+    </script>
+</body>
+</html>
